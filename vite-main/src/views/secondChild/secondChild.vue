@@ -12,7 +12,7 @@
 <script setup>
 import { ref, reactive } from "vue"
 import microApp, { EventCenterForMicroApp } from '@micro-zoe/micro-app'
-import { genMicroAppProps, sendMicroData, addListener } from '@/micro-app'
+import { genMicroAppProps } from '@/micro-app'
 
 //当子应用是vite应用时需要做特别的适配，适配vite的代价是巨大的，我们必须关闭沙箱功能，因为沙箱在module script下不支持，这导致大部分功能失效，包括：环境变量、样式隔离、元素隔离、资源路径补全、baseroute 等。
 //因为vite子应用关闭了沙箱，我们需要为子应用appname-vite创建EventCenterForMicroApp对象来实现数据通信
@@ -22,8 +22,7 @@ if (!window.eventCenterForAppNameVite) {
 
 let microAppData = reactive({ msg: '来自基座的数据' })
 function handleMount () {
-  // console.log('/secondChild/two')
-  // sendMicroData('router', { api: 'replace', route: { path: '/secondChild/two' } }, 'vite-child')
+  console.log('/secondChild/two')
 }
 
 </script>

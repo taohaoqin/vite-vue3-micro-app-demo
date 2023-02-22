@@ -8,7 +8,7 @@ import "element-plus/dist/index.css"
 import * as ElementPlusIconsVue from "@element-plus/icons-vue"
 import {
   isMicroApp,
-  sendMicroData,
+  // sendMicroData,
   handleMicroData,
   clearDataListener
   // getGlobalData, 
