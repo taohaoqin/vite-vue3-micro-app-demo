@@ -1,20 +1,19 @@
 <script lang="jsx">
-import { defineComponent, ref, reactive, h, resolveComponent, nextTick } from "vue"
-// import microApp, { getActiveApps } from "@micro-zoe/micro-app";
+import { defineComponent, ref, reactive, h, resolveComponent, onBeforeUnmount } from "vue"
 import { sendMicroData, appConfigs } from '@/micro-app'
 import { useStore } from "vuex"
 import { useRouter } from "vue-router";
 export default defineComponent({
   name: "layout",
   setup() {
-
     const router = useRouter();
     const store = useStore()
     let menuList = store.state.menu
     let activeIndex = ref('/')
-
+    // 关闭element自动跳转路由 改为手动
     function handlSelect(index) {
       activeIndex.value = index
+      // 解决子应用跳转问题以及浏览器前进后退的问题
       const pathname = location.pathname.split('/')[2]
       const is = index.includes(pathname)
       const app = appConfigs.find(i => index.includes(i.path))
@@ -37,8 +36,12 @@ export default defineComponent({
     }
     
     getActiveIndex()
+    // 监听浏览器的前进后退
+    window.addEventListener('popstate',  getActiveIndex)
 
-    window.addEventListener('popstate', () => getActiveIndex())
+    onBeforeUnmount(() => {
+       window.removeEventListener('popstate', getActiveIndex)
+    })
 
     function renderIcon(icon) {
       return icon ? <el-icon>{h(resolveComponent(icon))}</el-icon> : ""
@@ -108,7 +111,7 @@ export default defineComponent({
         </>
       )
     }
-  },
+  }
 })
 </script>
 <style lang="scss">

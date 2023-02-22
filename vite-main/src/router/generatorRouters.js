@@ -1,8 +1,10 @@
 import router from '.'
 import store from "@/store"
 
+// rollup使用import时不能传变量， 所以这里使用import.meta.glob
 let modules = import.meta.glob("../views/**/index.js")
 
+// 递归处理routers
 function dealWithTree (tree) {
   let res = tree.map(i => {
     const item = {

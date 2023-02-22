@@ -29,7 +29,7 @@ microApp.start({
   }
 })
 
-// 解决子应用跳转问题
+// 解决子应用跳转问题以及浏览器前进后退的问题
 router.beforeEach((to) => {
   const app = appConfigs.find(i => i.fullPath.includes(to.fullPath))
   if (app && app.fullPath !== to.fullPath) {
@@ -39,7 +39,7 @@ router.beforeEach((to) => {
   }
 })
 
-// 解决子应用跳转问题
+// 解决子应用跳转问题以及浏览器前进后退的问题
 router.afterEach((to) => {
   setTimeout(() => {
     if (to.hash !== location.hash) {
