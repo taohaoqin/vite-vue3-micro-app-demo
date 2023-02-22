@@ -1,19 +1,38 @@
 <script lang="jsx">
-import { defineComponent, ref, reactive, h, resolveComponent } from "vue"
+import { defineComponent, ref, reactive, h, resolveComponent, nextTick } from "vue"
+// import microApp, { getActiveApps } from "@micro-zoe/micro-app";
+import { sendMicroData, appConfigs } from '@/micro-app'
 import { useStore } from "vuex"
+import { useRouter } from "vue-router";
 export default defineComponent({
   name: "layout",
   setup() {
+
+    const router = useRouter();
     const store = useStore()
     let menuList = store.state.menu
     let activeIndex = ref('/')
+
     function handlSelect(index) {
       activeIndex.value = index
-    }
-    function getActiveIndex(){
-      let hash = location.hash // 通过hash判断选择的是否为子应用
       const pathname = location.pathname.split('/')[2]
-      activeIndex.value = `/${pathname}${hash ? '/': ''}`
+      const is = index.includes(pathname)
+      const app = appConfigs.find(i => index.includes(i.path))
+      if(location.hash && is && app){
+        const path = app.fullPath.split('#').at(-1)
+        index = path
+        sendMicroData('router', { api: 'push', route: index }, app.name)
+      } else {
+        if(app && index.includes(app.path)){
+          index = app.fullPath
+        }
+        router.push(index)
+      }
+    }
+
+    function getActiveIndex(){
+      const pathname = location.pathname.split('/')[2]
+      activeIndex.value = `/${pathname}`
       return activeIndex.value
     }
     
@@ -24,6 +43,16 @@ export default defineComponent({
     function renderIcon(icon) {
       return icon ? <el-icon>{h(resolveComponent(icon))}</el-icon> : ""
     }
+
+    // 有特殊处理的时候需要
+    function isMicro(i){
+      if(i.micro){
+        return i.url.split(':')[0]
+      } else {
+        return i.url || ''
+      }
+    }
+
     function renderMenu(menu) {
       return (
         <>
@@ -31,7 +60,7 @@ export default defineComponent({
             if (i.children) {
               return (
                 <>
-                  <el-sub-menu index={i.url || ""}>
+                  <el-sub-menu index={isMicro(i)}>
                     {{
                       default: () => renderMenu(i.children),
                       title: () => (
@@ -47,7 +76,7 @@ export default defineComponent({
             } else {
               return (
                 <>
-                  <el-menu-item index={i.url || ''}>
+                  <el-menu-item index={isMicro(i)}>
                     {renderIcon(i.icon)}
                     <span>{i.text}</span>
                   </el-menu-item>
@@ -65,7 +94,7 @@ export default defineComponent({
             <div class="left">
               <el-menu 
                 class="el-menu-vertical-demo" 
-                router={true}
+                router={false}
                 onSelect={handlSelect}
                 default-active={activeIndex.value}
               >

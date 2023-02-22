@@ -7,10 +7,12 @@ export const appUrlEnums = new Map([
 //子应用菜单配置 一个子应用可能对应多个菜单
 export const appConfigs = [
   {
-    path: '/firstChild',
-    name: 'vite-child'
+    fullPath: '/firstChild/#/firstChild/one', // 子应用完整路径
+    path: '/firstChild', // 子应用的父级路径
+    name: 'vite-child' // webComponent对应的appname
   },
   {
+    fullPath: '/secondChild/#/secondChild/two',
     path: '/secondChild',
     name: 'vite-child'
   }
@@ -30,9 +32,7 @@ export function genMicroAppProps (appName) {
 
 // 获取当前子应用模块对应的appname
 export function getCurrentAppName () {
-  console.log(window.location.pathname)
-  const hash = window.location.pathname.split('/')?.at(-1)
-  console.log(hash);
+  const hash = window.location.pathname.split('/')?.at(-2)
   const item = appConfigs.find(i => i.path.includes(hash))
   return item ? item.name : ''
 }
@@ -42,6 +42,7 @@ export const EventType = ['init', 'router']
 
 // 向子应用发送数据
 export function sendMicroData (type, data, appName = getCurrentAppName()) {
+  console.log(appName)
   if (EventType.includes(type) && appUrlEnums.has(appName)) {
     microApp.setData(appName, { type, data })
   } else {

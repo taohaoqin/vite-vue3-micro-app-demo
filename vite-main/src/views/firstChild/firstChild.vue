@@ -2,7 +2,6 @@
   <div>
     <micro-app
       v-bind="genMicroAppProps('vite-child')"
-      inline
       disablesandbox
       :data='microAppData'
       @mounted='handleMount'
@@ -23,11 +22,12 @@ if (!window.eventCenterForAppNameVite) {
 
 let microAppData = reactive({ msg: '来自父应用传递的数据' })
 function handleMount () {
-  sendMicroData('router', { api: 'replace', route: { path: '/one' } }, 'vite-child')
+  // console.log('/firstChild/one')
+  // sendMicroData('router', { api: 'replace', route: { path: '/firstChild/one' } }, 'vite-child')
 
-  addListener('emit', (data) => {
-    console.log('来自子应用的数据', data)
-  })
+  // addListener('emit', (data) => {
+  //   console.log('来自子应用的数据', data)
+  // })
 }
 
 </script>

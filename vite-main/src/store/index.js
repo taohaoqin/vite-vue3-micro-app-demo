@@ -6,11 +6,12 @@ export default createStore({
       {
         text: "二级菜单",
         icon: "Menu",
-        url: "/secondChild/",
+        url: "/secondChild:page*",
         children: [
           {
             text: "微前端2",
-            url: "/secondChild/",
+            micro: true,
+            url: "/secondChild:page*",
             name: 'secondChild',
             leaf: true,
           },
@@ -30,7 +31,8 @@ export default createStore({
       },
       {
         text: "微前端1",
-        url: "/firstChild/",
+        micro: true,
+        url: "/firstChild:page*",
         icon: "Grid",
         name: 'firstChild',
         leaf: true,

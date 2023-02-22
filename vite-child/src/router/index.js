@@ -9,12 +9,12 @@ export default createRouter({
       component: () => import('../layout/index.js'),
       children: [
         {
-          path: "/one",
+          path: "/firstChild/one",
           name: "one",
           component: () => import('../views/one/index.js'),
         },
         {
-          path: "/two",
+          path: "/secondChild/two",
           name: "two",
           component: () => import('../views/two/index.js'),
         },

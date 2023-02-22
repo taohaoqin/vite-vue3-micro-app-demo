@@ -7,8 +7,7 @@ import ElementPlus from "element-plus"
 import "element-plus/dist/index.css"
 import * as ElementPlusIconsVue from "@element-plus/icons-vue"
 import microApp from '@micro-zoe/micro-app'
-import { setGlobalData } from '@/micro-app'
-
+import { setGlobalData, sendMicroData, appConfigs } from '@/micro-app'
 
 microApp.start({
   plugins: {
@@ -28,6 +27,26 @@ microApp.start({
       ],
     }
   }
+})
+
+// 解决子应用跳转问题
+router.beforeEach((to) => {
+  const app = appConfigs.find(i => i.fullPath.includes(to.fullPath))
+  if (app && app.fullPath !== to.fullPath) {
+    router.replace(app.fullPath)
+  } else {
+    return true
+  }
+})
+
+// 解决子应用跳转问题
+router.afterEach((to) => {
+  setTimeout(() => {
+    if (to.hash !== location.hash) {
+      const path = to.hash.substring(1)
+      sendMicroData('router', { api: 'replace', route: { path } })
+    }
+  })
 })
 
 const app = createApp(App)
