@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@micro-zoe/micro-app": "latest",
+    "@micro-zoe/micro-app": "0.8.10",
     "vue": "^3.2.45",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2",
