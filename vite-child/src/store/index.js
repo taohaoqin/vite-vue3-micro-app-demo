@@ -10,7 +10,7 @@ export default createStore({
         children: [
           {
             text: "二级节点",
-            url: "/firstChild/two",
+            url: "/secondChild/two",
             name: 'two',
             leaf: true,
           },
@@ -20,7 +20,7 @@ export default createStore({
             children: [
               {
                 text: "三级节点",
-                url: "/firstChild/three",
+                url: "/three",
                 name: 'three',
                 leaf: true,
               },

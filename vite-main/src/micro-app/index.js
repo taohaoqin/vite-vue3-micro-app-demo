@@ -8,7 +8,7 @@ export const appUrlEnums = new Map([
 export const appConfigs = [
   {
     // /#/之前表示的是主应用的路径 之后表示的为子应用的路径  
-    fullPath: '/firstChild/#/firstChild/one', // 子应用完整路径
+    fullPath: '/firstChild/#/firstChild/one', // 应用完整路径
     path: '/firstChild', // 子应用的父级路径
     name: 'vite-child' // webComponent对应的appname
   },

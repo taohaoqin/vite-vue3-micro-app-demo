@@ -41,12 +41,10 @@ router.beforeEach((to) => {
 
 // 解决子应用跳转问题以及浏览器前进后退的问题
 router.afterEach((to) => {
-  setTimeout(() => {
-    if (to.hash !== location.hash) {
-      const path = to.hash.substring(1)
-      sendMicroData('router', { api: 'replace', route: { path } })
-    }
-  })
+  if (to.hash !== location.hash) {
+    const path = to.hash.substring(1)
+    sendMicroData('router', { api: 'replace', route: { path } })
+  }
 })
 
 const app = createApp(App)

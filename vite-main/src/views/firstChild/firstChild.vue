@@ -14,6 +14,8 @@ import { ref, reactive } from "vue"
 import microApp, { EventCenterForMicroApp } from '@micro-zoe/micro-app'
 import {
   genMicroAppProps,
+  sendMicroData,
+  appConfigs
   // addListener 
 } from '@/micro-app'
 
@@ -25,7 +27,17 @@ if (!window.eventCenterForAppNameVite) {
 
 let microAppData = reactive({ msg: '来自父应用传递的数据' })
 function handleMount () {
-  console.log('/firstChild/one')
+  const pathname = window.location.pathname
+  const hash = window.location.hash
+  const app = appConfigs.find(i => {
+    return pathname.includes(i.fullPath.split('#')[0])
+  })
+  if (app) {
+    const path = app.fullPath.split('#').at(-1)
+    if (hash !== path) {
+      sendMicroData('router', { api: 'replace', route: { path } })
+    }
+  }
   // addListener('emit', (data) => {
   //   console.log('来自子应用的数据', data)
   // })
